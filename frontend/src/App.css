@@ -1,42 +1,46 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.main-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10vh;
+    flex-direction: column;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.water-background {
+    background-color: #4b495f;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.game-heading {
+    font-size: 2rem;
+    padding: 5px 20px;
+    border-radius: 5px;
+    text-align: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.square-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 10px;
+    column-gap: 10px;
 }
 
-.card {
-  padding: 2em;
+.move-detection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5vw;
+    width: 400px;
 }
 
-.read-the-docs {
-  color: #888;
+.left , .right{
+    height: 30px;
+    width: 120px;
+    background-color: #4b495f;
+    border-bottom-left-radius: 50px;
+    border-top-right-radius: 50px;
+    padding-top: 7px;
+    padding-bottom: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
 }

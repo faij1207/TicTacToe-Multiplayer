@@ -1,0 +1,13 @@
+
+
+.square{
+   width: 100px;
+    height: 100px;
+    background-color: #4b495f ;
+    border-radius: 5px;
+}
+
+.square:hover{
+    background-color: #6b69a4;
+    cursor: pointer;
+}
