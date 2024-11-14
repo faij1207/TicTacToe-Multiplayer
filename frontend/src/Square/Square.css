@@ -11,3 +11,7 @@
     background-color: #6b69a4;
     cursor: pointer;
 }
+
+.not-allowed{
+    cursor: not-allowed !important;
+}
