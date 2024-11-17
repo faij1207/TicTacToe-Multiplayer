@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Square from "./Square/Square";
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3000',{
+  autoConnect: true,
+});
 
 const renderForm = [
   [1, 2, 3],
