@@ -49,6 +49,7 @@ export default function Square({
   currentPlayer,
   setCurrentPlayer,
   finishedState,
+  finishedArrayState,
 }) {
   const [icon, setIcon] = useState(null);
 
@@ -80,7 +81,9 @@ export default function Square({
   return (
     <div
       onClick={handleClick}
-      className={`square ${finishedState ? "not-allowed" : ""}`}
+      className={`square ${finishedState ? "not-allowed" : ""} ${
+        finishedArrayState.includes(id) ? finishedState + "-won" : ""
+      }`}
     >
       {icon}
     </div>

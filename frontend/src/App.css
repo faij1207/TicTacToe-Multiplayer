@@ -6,6 +6,17 @@
     flex-direction: column;
 }
 
+.playOnline {
+    background-color: #e4ca56;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 3rem;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+}
+
 .water-background {
     background-color: #4b495f;
 }

@@ -13,6 +13,9 @@ export default function App() {
 
   const [currentPlayer, setCurrentPlayer] = useState("circle");
   const [finishedState, setFinishedState] = useState(false);
+  const [finishedArrayState, setFinishedArrayState] = useState([]);
+
+  const[playOnline, setPlayOnline] = useState(false);
 
   const checkWinner = () => {
     // row dynamic
@@ -21,6 +24,7 @@ export default function App() {
         gameState[row][0] === gameState[row][1] &&
         gameState[row][1] === gameState[row][2]
       ) {
+        setFinishedArrayState([row*3+1, row*3+2, row*3+3]);
         return gameState[row][0];
       }
     }
@@ -31,6 +35,7 @@ export default function App() {
         gameState[0][col] === gameState[1][col] &&
         gameState[1][col] === gameState[2][col]
       ) {
+        setFinishedArrayState([col+1, col+4, col+7]);
         return gameState[0][col];
       }
     }
@@ -39,6 +44,7 @@ export default function App() {
       gameState[0][0] === gameState[1][1] &&
       gameState[1][1] === gameState[2][2]
     ) {
+      setFinishedArrayState([1, 5, 9]);
       return gameState[0][0];
     }
 
@@ -46,6 +52,7 @@ export default function App() {
       gameState[0][2] === gameState[1][1] &&
       gameState[1][1] === gameState[2][0]
     ) {
+      setFinishedArrayState([3, 5, 7]);
       return gameState[0][2];
     }
 
@@ -67,6 +74,16 @@ export default function App() {
     }
   }, [gameState]);
 
+  if(!playOnline){
+    return(
+      <>
+      <div className="main-div">
+        <button className="playOnline">Play Online</button>
+      </div>
+      </>
+    )
+  }
+
   return (
     <div className="main-div">
       <div className="move-detection">
@@ -80,6 +97,7 @@ export default function App() {
             return arr.map((e, colIndex) => {
               return (
                 <Square
+                  finishedArrayState={finishedArrayState}
                   finishedState={finishedState}
                   currentPlayer={currentPlayer}
                   setCurrentPlayer={setCurrentPlayer}

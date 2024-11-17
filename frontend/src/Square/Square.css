@@ -15,3 +15,11 @@
 .not-allowed{
     cursor: not-allowed !important;
 }
+
+.circle-won{
+    background-color: #dd7f9f;
+}
+
+.cross-won{
+    background-color: rgb(63,167,240);
+}
