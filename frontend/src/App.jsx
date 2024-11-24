@@ -22,6 +22,7 @@ export default function App() {
   const [opponentName, setOpponentName] = useState(null);
 
   const [socket, setSocket] = useState(null);
+  const [playingAs, setPlayingAs] = useState(null);
 
   const checkWinner = () => {
     // row dynamic
@@ -76,7 +77,6 @@ export default function App() {
     const winner = checkWinner();
     if (winner) {
       setFinishedState(winner);
-      console.log("winner is", winner);
     }
   }, [gameState]);
 
@@ -96,6 +96,22 @@ export default function App() {
 
   useEffect(() => {
     if (socket) {
+      socket.on("opponentLeftMatch", () => {
+        setFinishedState("opponentLeftMatch");
+      });
+
+      socket.on("playerMoveFromServer", (data) => {
+        const id = data.state.id;
+        setGameState((prevState) => {
+          let newState = [...prevState];
+          const row = Math.floor((id - 1) / 3);
+          const col = (id - 1) % 3;
+          newState[row][col] = data.state.sign;
+          return newState;
+        });
+        setCurrentPlayer(data.state.sign === "circle" ? "cross" : "circle");
+      });
+
       socket.on("connect", () => {
         setPlayOnline(true);
       });
@@ -104,8 +120,8 @@ export default function App() {
         setPlayOnline(false);
       });
       socket.on("OpponentFound", (data) => {
+        setPlayingAs(data.playingAs);
         setOpponentName(data.opponentName);
-        console.log("opponent found", data.opponentName);
       });
       socket.on("OpponentNotFound", () => {
         setOpponentName(false);
@@ -164,8 +180,20 @@ export default function App() {
   return (
     <div className="main-div">
       <div className="move-detection">
-        <div className="left">Yourself</div>
-        <div className="right">Opponent</div>
+        <div
+          className={`left ${
+            currentPlayer === playingAs ? "current-move-" + currentPlayer : ""
+          }`}
+        >
+          {playerName}
+        </div>
+        <div
+          className={`right ${
+            currentPlayer !== playingAs ? "current-move-" + currentPlayer : ""
+          }`}
+        >
+          {opponentName}
+        </div>
       </div>
       <div>
         <h1 className="game-heading water-background">Tic Tac Toe</h1>
@@ -174,6 +202,9 @@ export default function App() {
             return arr.map((e, colIndex) => {
               return (
                 <Square
+                  socket={socket}
+                  playingAs={playingAs}
+                  gameState={gameState}
                   finishedArrayState={finishedArrayState}
                   finishedState={finishedState}
                   currentPlayer={currentPlayer}
@@ -181,20 +212,32 @@ export default function App() {
                   setGameState={setGameState}
                   id={rowIndex * 3 + colIndex + 1}
                   key={rowIndex * 3 + colIndex + 1}
+                  currentElement={e}
                 />
               );
             });
           })}
         </div>
-        {finishedState && finishedState !== "draw" && (
-          <h3 className="winner-state">{finishedState} won the game</h3>
-        )}
-        {finishedState === "draw" && (
-          <h3 className="winner-state">Match Draw</h3>
-        )}
+        {finishedState &&
+          finishedState !== "opponentLeftMatch" &&
+          finishedState !== "draw" && (
+            <h3 className="winner-state">
+              {finishedState === playingAs ? "you" : finishedState} won the game
+            </h3>
+          )}
+        {finishedState &&
+          finishedState !== "opponentLeftMatch" &&
+          finishedState === "draw" && (
+            <h3 className="winner-state">Match Draw</h3>
+          )}
       </div>
       {!finishedState && opponentName && (
         <h3 className="winner-state">You are playing against {opponentName}</h3>
+      )}
+      {finishedState && finishedState === "opponentLeftMatch" && (
+        <h3 className="winner-state">
+          You won the match ,Opponent Left the Match
+        </h3>
       )}
     </div>
   );

@@ -50,10 +50,18 @@ export default function Square({
   setCurrentPlayer,
   finishedState,
   finishedArrayState,
+  gameState,
+  socket,
+  currentElement,
+  playingAs,
 }) {
   const [icon, setIcon] = useState(null);
 
   const handleClick = () => {
+
+    if(playingAs !== currentPlayer){
+      return;
+    }
     if (finishedState) {
       return;
     }
@@ -66,12 +74,18 @@ export default function Square({
 
       const myCurrentPlayer = currentPlayer;
 
+      socket?.emit("playerMoveFromClient", {
+        state: {
+          id,
+          sign: myCurrentPlayer,
+        },
+      });
+
       setCurrentPlayer(currentPlayer === "circle" ? "cross" : "circle");
       setGameState((prevState) => {
         let newState = [...prevState];
         const row = Math.floor((id - 1) / 3);
         const col = (id - 1) % 3;
-        console.log(row, col);
         newState[row][col] = myCurrentPlayer;
         return newState;
       });
@@ -81,11 +95,17 @@ export default function Square({
   return (
     <div
       onClick={handleClick}
-      className={`square ${finishedState ? "not-allowed" : ""} ${
-        finishedArrayState.includes(id) ? finishedState + "-won" : ""
-      }`}
+      className={`square ${finishedState ? "not-allowed" : ""} 
+      ${currentPlayer !== playingAs ? "not-allowed" : ""}
+      ${finishedArrayState.includes(id) ? finishedState + "-won" : ""}
+       ${finishedState && finishedState !== playingAs ? "grey-background" : ""}`
+    }
     >
-      {icon}
+      {currentElement === "circle"
+        ? circleSvg
+        : currentElement === "cross"
+        ? crossSvg
+        : icon}
     </div>
   );
 }

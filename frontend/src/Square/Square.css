@@ -23,3 +23,7 @@
 .cross-won{
     background-color: rgb(63,167,240);
 }
+
+.grey-background{
+    background-color: gray !important;
+}

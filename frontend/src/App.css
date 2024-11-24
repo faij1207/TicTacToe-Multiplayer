@@ -64,3 +64,11 @@
     font-weight: 600;
     text-align: center;
 }
+
+.current-move-cross{
+    background-color: #3fa7f0 !important;
+}
+
+.current-move-circle{
+    background-color: #dd7f9f !important;
+}
